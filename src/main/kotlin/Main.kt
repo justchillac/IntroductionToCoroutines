@@ -50,7 +50,8 @@ suspend fun getForecast() : String{
 }
 
 suspend fun getTemperature() : String{
-    delay(1000)
+    delay(500)
+    throw AssertionError("Temeperature is Invalid")
     return "30\u00B0C"
 }
 
@@ -58,8 +59,23 @@ suspend fun getWeatherReport() = coroutineScope {
     val forecast = async{
         getForecast()
     }
-    val temperature = async{
+//    val temperature = async{
+//        try {
+//            getTemperature()
+//        } catch (e: AssertionError) {
+//            "{Temperature not found}"
+//        }
+//    }
+//    "${forecast.await()} ${temperature.await()}"
+
+    val temperature = async {
         getTemperature()
     }
-    "${forecast.await()} ${temperature.await()}"
+
+    delay(200)
+    temperature.cancel()
+
+    "${forecast.await()}"
+//    What you've learned here is that a coroutine can be cancelled, but it won't affect other coroutines in the same
+//    scope and the parent coroutine will not be cancelled.
 }

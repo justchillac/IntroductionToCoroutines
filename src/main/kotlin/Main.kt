@@ -26,6 +26,18 @@ fun main() {
 //    println("Execution Time: ${time/1000.0}")
 
     runBlocking{
+        println("${Thread.currentThread().name} - runBlocking")
+        launch{
+            println("${Thread.currentThread().name} - launch")
+            withContext(Dispatchers.Default) {
+                println("${Thread.currentThread().name} - withContext")
+                delay(1000)
+                println("10 results found")
+            }
+            println("${Thread.currentThread().name} - lauchEnd")
+        }
+        println("${Thread.currentThread().name} - launchOut")
+        println("Loading...")
         println("Weather forecast")
         println(getWeatherReport())
         println("Have a good day")
